@@ -1,51 +1,17 @@
 # Introducing FitVids.js
-A lightweight, easy-to-use jQuery plugin for fluid width video embeds.
-
-FitVids automates [the Intrinsic Ratio Method by Thierry Koblentz](http://www.alistapart.com/articles/creating-intrinsic-ratios-for-video/) to achieve fluid width videos in your responsive web design.
-
-## How Do I Use It?
-Include jQuery 1.7+ and FitVids.js in your layout and target your videos container with `fitVids()`.
-
-```html
-<script src="path/to/jquery.min.js"></script>
-<script src="path/to/jquery.fitvids.js"></script>
-<script>
-  $(document).ready(function(){
-    // Target your .container, .wrapper, .post, etc.
-    $("#thing-with-videos").fitVids();
-  });
-</script>
-```
-
-This will wrap each video in a `div.fluid-width-video-wrapper` and apply the necessary CSS. After the initial Javascript call, it's all percentage-based CSS magic.
-
-## Currently Supported Players
-<table>
-<tr><td>YouTube</td><td>Y</td></tr>
-<tr><td>Vimeo</td><td>Y</td></tr>
-<tr><td>Blip.tv</td><td>Y</td></tr>
-<tr><td>Viddler</td><td>Y</td></tr>
-<tr><td>Kickstarter</td><td> Y</td></tr>
-</table>
-
-## Add Your Own Video Vendor
-Have a custom video player? We now have a `customSelector` option where you can add your own specific video vendor selector (_mileage may vary depending on vendor and fluidity of player_):
+Kaltura doesn't have any tutorial (that I could find) on using their embed code in a responsive design, and FitVids wasn't working out-of-the-box with Kaltura. So, I dug a little and found only a couple small details that were hindering it. Also, FitVids needs to be run in Kaltura's callback function in the `kWidget.embed()` method:
 
 ```javascript
-  $("#thing-with-videos").fitVids({ customSelector: "iframe[src^='http://mycoolvideosite.com'], iframe[src^='http://myviiids.com']"});
-  // Selectors are comma separated, just like CSS
+kWidget.embed({
+	'targetId': 'myEmbedTarget',
+	'wid': '_{partnerId}',
+	'uiconf_id' : '{uiConfId}',
+	'entry_id' : '{entryId}',
+	flashvars: {},
+	'readyCallback': function() { $("{YOUR_VIDEO_CONTAINER}").fitVids(); }
+});
 ```
 
-_Note:_ This will be the quickest way to add your own custom vendor as well as test your player's compatibility with FitVids.
+Easy, peasy.
 
-## Changelog
-* _08.16.13 - v1.0.3 - 2.779k_
-  * Optionally works with Zepto
-* _09.02.11 - v1.0.2 - 2.376kb_
-  * Added `customSelector` option
-* _09.02.11 - v1.0.0 - 2.135kb_
-	* Initial release
-	* Vimeo,YouTube, Blip.tv, Viddler, Kickstarter
-
-## Credits
-@ChrisCoyier, @davatron5000, @TrentWalton, @raygunray
+I don't believe my changes to FitVids will cause it to break for using with any other video vendor it supports (YouTube, Vimeo, etc.), but I have not tested it thoroughly. (see the History on the js file to see my changes)
