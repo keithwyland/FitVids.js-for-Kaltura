@@ -1,4 +1,4 @@
-# Introducing FitVids.js
+# FitVids.js for Kaltura
 Kaltura doesn't have any tutorial (that I could find) on using their embed code in a responsive design, and FitVids wasn't working out-of-the-box with Kaltura. So, I dug a little and found only a couple small details that were hindering it. Also, FitVids needs to be run in Kaltura's callback function in the `kWidget.embed()` method:
 
 ```javascript
